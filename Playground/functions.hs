@@ -14,3 +14,20 @@ doubleUsingFunctionAndAdd x y = makeItTwice x + y
 canVote age = if age > 18 then True else False
 
 sayName = "The name is Sumit"
+
+-- Trying function name
+myReduce:: [Int] -> Int
+myReduce list = sum list
+
+-- Pattern matching
+answerToUniverse:: (Integral a) => a -> String
+answerToUniverse 42 = "That's correct!"
+answerToUniverse x = "No, that's not the answer."
+
+factorial:: (Integral x) => x -> x
+factorial 0 = 1
+factorial n = n * factorial (n-1)
+
+factorialWithoutClassConstruct:: Int -> Int
+factorialWithoutClassConstruct 0 = 1
+factorialWithoutClassConstruct n = n * factorialWithoutClassConstruct (n-1)
