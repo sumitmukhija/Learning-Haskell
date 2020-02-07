@@ -15,3 +15,5 @@ hundredTriangles = [(a,b,c) | a <- [1.. 100], b <- [1.. 100], c <- [1.. 100], a*
 -- sum of elements in a list
 listOfTups = [(3,1), (13,3), (1, 6), (1,0), (2,5)]
 accTuple = [x + y | (x,y) <-  listOfTups]
+
+

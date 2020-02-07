@@ -160,3 +160,48 @@ lucky x = "Sorry, you're out of luck, pal!"
 
 - When making patterns, we should always include a catch-all pattern so that our program doesn't crash if we get some unexpected input.
 - Pattern matching can also be used on tuples
+
+```
+let xs = [(1,3), (4,3), (2,4), (5,3), (5,6), (3,1)]  
+[a+b | (a,b) <- xs]
+
+```
+
+- Pattern matching can be used with lists. 
+- you can't use ++ in pattern matches
+- A list [1,2,3,4] is just syntactic sugar for 1:2:3:4:[]
+- There's also a thing called as patterns. Those are a handy way of breaking something up according to a pattern and binding it to names whilst still keeping a reference to the whole thing.
+- You do that by putting a name and an @ in front of a pattern. For instance, the pattern xs@(x:y:ys). This pattern will match exactly the same thing as x:y:ys
+
+
+#### Guards
+- guards are a way of testing whether some property of a value (or several of them) are true or false.
+- Guards are like if, more readable & work well with patterns
+
+`fn prm | prm condition = return value | otherwise return value`
+
+- We put the keyword where after the guards. Calculate once, bind it to a name and then use that name instead of the expression. 
+
+- Just like we've defined constants in where blocks, we can also define functions. 
+
+```
+calcBmis :: (RealFloat a) => [(a, a)] -> [a]  
+calcBmis xs = [bmi w h | (w, h) <- xs]  
+    where bmi weight height = weight / height ^ 2
+```
+
+- Very similar to where bindings are let bindings. Where bindings are a syntactic construct that let you bind to variables at the end of a function and the whole function can see them, including all the guards. Let bindings let you bind to variables anywhere and are expressions themselves, but are very local, so they don't span across guards
+
+
+```
+let sideArea = 2 * pi * r * h  
+        topArea = pi * r ^2  
+    in  sideArea + 2 * topArea 
+```
+
+- The form is let <bindings> in <expression>. The names that you define in the let part are accessible to the expression after the in part. As you can see, we could have also defined this with a where binding
+- You can also put let bindings inside list comprehensions.
+
+#### Cases
+
+- `case expression of pattern -> result`

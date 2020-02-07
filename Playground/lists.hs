@@ -57,3 +57,9 @@ smallestNumber = minimum numbers
 
 --elem
 didYouForgetToWrite item = if item `elem` shoppingList then "No!" else "Oh, yes!"
+
+--Checking for syntactic sugar with con op
+actualList = [1,2,3]
+listWithCon = 1:2:3:[]
+areListsSame = actualList == listWithCon --returns true
+
