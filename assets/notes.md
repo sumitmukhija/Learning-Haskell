@@ -205,3 +205,32 @@ let sideArea = 2 * pi * r * h
 #### Cases
 
 - `case expression of pattern -> result`
+
+```
+
+describeList xs = "The list is " ++ case xs of [] -> "empty."  
+                                               [x] -> "a singleton list."   
+                                               xs -> "a longer list."
+
+
+````
+
+#### HOF
+
+- Haskell functions can take functions as parameters and return functions as return values. A function that does either of those is called a higher order function.
+
+- Every function in Haskell officially only takes one parameter
+
+- Putting a space between two things is simply function application. The space is sort of like an operator and it has the highest precedence
+
+```
+
+ghci> max 4 5  
+5  
+ghci> (max 4) 5  
+5  
+```
+
+- Using partial application (calling functions with too few parameters, if you will) is a neat way to create functions on the fly so we can pass them to another function or to seed them with some data
+
+- What really happens when we do multThree 3 5 9 or ((multThree 3) 5) 9? First, 3 is applied to multThree, because they're separated by a space. That creates a function that takes one parameter and returns a function. So then 5 is applied to that, which creates a function that will take a parameter and multiply it by 15. 9 is applied to that function and the result is 135 	
