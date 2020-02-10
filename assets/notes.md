@@ -219,7 +219,7 @@ describeList xs = "The list is " ++ case xs of [] -> "empty."
 
 - Haskell functions can take functions as parameters and return functions as return values. A function that does either of those is called a higher order function.
 
-- Every function in Haskell officially only takes one parameter
+- Every function in Haskell officially only takes one parameter and returns one value
 
 - Putting a space between two things is simply function application. The space is sort of like an operator and it has the highest precedence
 
@@ -234,3 +234,83 @@ ghci> (max 4) 5
 - Using partial application (calling functions with too few parameters, if you will) is a neat way to create functions on the fly so we can pass them to another function or to seed them with some data
 
 - What really happens when we do multThree 3 5 9 or ((multThree 3) 5) 9? First, 3 is applied to multThree, because they're separated by a space. That creates a function that takes one parameter and returns a function. So then 5 is applied to that, which creates a function that will take a parameter and multiply it by 15. 9 is applied to that function and the result is 135 	
+
+- In Haskell, all functions are automatically curried.
+
+-  -> is naturally right-associative.
+
+- `zipWith` takes a function and two lists as parameters and then joins the two lists by applying the function between corresponding elements
+
+- `map` takes a function and a list and applies that function to every element in the list, producing a new list.
+
+- `Lambdas` are basically anonymous functions that are used because we need some functions only once. To make a lambda, we write a \ and then we write the parameters, separated by spaces. 
+
+```
+numLongChains = length (filter (\xs -> length xs > 15) (map chain [1..100]))  
+```
+- We can have any number of params in a lambda. We can pattern match in lambda.
+-  If a pattern matching fails in a lambda, a runtime error occurs, so be careful when pattern matching in lambdas
+
+- A fold takes a binary function, a starting value (I like to call it the accumulator) and a list to fold up. The binary function itself takes two parameters. The binary function is called with the accumulator and the first (or last) element and produces a new accumulator
+
+- foldl folds from left. foldr folds from right.
+
+- `firstThat` returns the first element of a list that satisfies a function or a default value, if none of them do.
+
+- foldL1 and foldr1 and similar to foldl and foldr. They don't need a starting value
+
+- scanl and scanr are like foldl and foldr, only they report all the intermediate accumulator states in the form of a list. There are also scanl1 and scanr1, which are analogous to foldl1 and foldr1.
+
+- normal function application (putting a space between two things) has a really high precedence, the $ function has the lowest precedence. Function application with a space is left-associative (so f a b c is the same as ((f a) b) c)), function application with $ is right-associative.
+
+- When a $ is encountered, the expression on its right is applied as the parameter to the function on its left
+
+- Function composition is exec with . 
+- Function composition is right-associative. f (g (z x)) is equivalent to (f . g . z) x
+
+#### Modules
+
+- All the functions, types and typeclasses that we've dealt with so far were part of the Prelude module, which is imported by default.
+
+- The syntax for importing modules in a Haskell script is import `<module name>`.
+
+- To load modules from GHCi - :m + Data.list
+
+- `import Data.List hiding (nub)`  will import all functions from data.list but nub. Useful when we have functions with conflicting names. Another way of dealing with name clashes is to do qualified imports. `import qualified Data.Map`. This makes it so that if we want to reference Data.Map's filter function, we have to do Data.Map.filter, whereas just filter still refers to the normal filter
+
+- `import Data.List (nub, sort)` will import only nub and sort
+
+- `import qualified Data.Map as M`
+
+- Prelude module is auto imported.
+
+
+
+#### Data.List
+
+- `find` finds an element in a list. If it doesn't find anything, it doesn't return anything. `Maybe` is returned.
+
+- `interspace` takes an element and a list and then puts that element in between each pair of elements in the list. 
+
+- `intercalate` takes a list of lists and a list. It then inserts that list in between all those lists and then flattens the result.
+
+- `transpose` transposes a list of lists
+
+#### Exporting our modules
+
+- At the beginning of a module, we specify the module name. If we have a file called Geometry.hs, then we should name our module Geometry. Then, we specify the functions that it exports and after that, we can start writing the functions
+
+```
+
+module Geometry  
+( sphereVolume  
+, sphereArea  
+, cubeVolume  
+, cubeArea  
+, cuboidArea  
+, cuboidVolume  
+) where  
+
+```
+
+#### To use the module `import Geometry  `

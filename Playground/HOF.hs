@@ -34,3 +34,18 @@ addSet = map (\(x,y) ->  x+y) [(1,2), (3,4), (5,6)]
 
 fsum:: [Int] -> Int
 fsum xs = foldl(\acc x ->  acc + x) 0  xs
+
+
+-- first that
+
+-- firstThat >4 0 [1,2,3,4,5]
+
+-- Function composition
+-- Negating a number with lambda
+
+negativeNumbersWithLambda = map (\x -> negate (abs x)) [5,-3,-6,7,-3,2,-19,24]  
+
+-- Negating a number with fn composition
+
+
+negativeNumbersWithFnComp = map (negate . abs) [5,-3,-6,7,-3,2,-19,24]  
