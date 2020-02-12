@@ -313,4 +313,49 @@ module Geometry
 
 ```
 
-#### To use the module `import Geometry  `
+- To use the module `import Geometry  `
+
+- Submodules: First, we'll make a folder called Geometry. Mind the capital G. In it, we'll place three files: Sphere.hs, Cuboid.hs, and Cube.hs. Here's what the files will contain:
+
+#### Making our own data types
+
+- We create our own data type by using `data` keyword
+- `data Bool = True | False`
+- data means that we're defining a new data type. The part before the = denotes the type, which is Bool. The parts after the = are value constructors. They specify the different values that this type can have.
+- Both the type name and the value constructors have to be capital cased
+- Value constructors are functions, so we can map them and partially apply them
+- To print our data types, they must derive from show
+`data Shape = Circle Float Float Float | Rectangle Float Float Float Float deriving (Show)`
+- By exporting Shape(..), we exported all the value constructors for Shape, so that means that whoever imports our module can make shapes by using the Rectangle and Circle value constructors. It's the same as writing Shape (Rectangle, Circle).
+
+- Alternate way to create data. Called record syntax
+```
+data Person = Person { firstName :: String  
+                     , lastName :: String  
+                     , age :: Int  
+                     , height :: Float  
+                     , phoneNumber :: String  
+                     , flavor :: String  
+                     } deriving (Show)  
+```
+
+- The main benefit of this is that it creates functions that lookup fields in the data type. By using record syntax to create this data type, Haskell automatically made these functions: firstName, lastName etc.
+
+- we don't have to necessarily put the fields in the proper order, as long as we list all of them. But if we don't use record syntax, we have to specify them in order.
+
+#### Typeclasses
+- a typeclass is a sort of an interface that defines some behavior. 
+- A type can be made an instance of a typeclass if it supports that behavior. Example: the Int type is an instance of the Eq typeclass because the Eq typeclass defines behavior for stuff that can be equated.
+- Typeclasses are more like interfaces
+- When we derive the Eq instance for a type and then try to compare two values of that type with == or /=, Haskell will see if the value constructors match (there's only one value constructor here though) and then it will check if all the data contained inside matches by testing each pair of fields with ==. There's only one catch though, the types of all the fields also have to be part of the Eq typeclass. 
+- Multiple typeclasses can be derived `deriving (Eq, Show, Read)`
+- New typeclasses can be made using `class`
+- class is for defining new typeclasses and instance is for making our types instances of typeclasses
+
+
+#### Typesynonyms
+-  they're just about giving some types different names so that they make more sense to someone reading our code and documentation
+
+`type String = [Char]  `
+
+- Type synonyms can also be parameterized. If we want a type that represents an association list type but still want it to be general

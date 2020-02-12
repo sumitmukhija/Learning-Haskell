@@ -15,7 +15,9 @@ diffCircles = map (Circle (Point 2 2)) [4,5,6,6]
 
 -- Person
 data Person = Person String String Int Bool Car deriving (Show)
-data Car = Car String Int deriving (Show)
+data Car = Car {
+	make :: String, year :: Int
+} deriving (Show)
 
 chevy = Car "Chevy" 1990
 jon = Person "Jon" "Galway" 32 True chevy
@@ -30,3 +32,7 @@ makeAndYear (Car name year) = name ++ " of " ++ show year
 whatCar:: Person -> String
 whatCar (Person _ _ _ _ car) = (makeAndYear car)
 
+
+-- Typecalass
+class Breakable a where
+	
