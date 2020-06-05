@@ -1,0 +1,59 @@
+
+root:
+    "Anything that starts with _ is not a language contruct"
+    - examples:
+        - https://renenyffenegger.ch/notes/tools/Graphviz/examples/index
+    digraph <optional_name>:
+        - _title:
+            "represents the title related attribs in dot"
+            - label:
+                - [Char] 
+                - [HTMLString]
+            - labelloc:
+                - [Char]
+                - values
+                    - b
+                    - t
+                - default: "b"
+        - node [<attrib>]:
+            - _attribs:
+                - fontname:
+                    - [Char]
+                - shape:
+                    - record
+                    - plaintext
+                    - circle
+                    - box 
+                    - diamond
+                - label:
+                    - [Char]
+                    - \r \l \n for indentation
+        - rank:
+            - { rank=same rA sA tA }
+            - rA sA tA are nodes
+        - _edge:
+            "denoted by an arrow"
+            - _attribs:
+                - style:
+                    - dashed
+                    - solid
+                - color:
+                    - colorString
+                - penwidth:
+                    - number
+                - arrowhead:
+                    - none
+                    - ?
+            - _multiple_edges:
+                - A -> {B,C}
+        - subgraph:
+            - subgraph <name_of_cluster> { node -> node}
+            - can be nested
+                    
+
+
+
+        
+        
+        
+    
