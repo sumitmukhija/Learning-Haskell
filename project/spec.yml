@@ -3,6 +3,7 @@ root:
     "Anything that starts with _ is not a language contruct"
     - documentation:
         - https://graphviz.org/doc/info/lang.html
+        - https://www.graphviz.org/doc/info/attrs.html
     - examples:
         - https://renenyffenegger.ch/notes/tools/Graphviz/examples/index
      - [strict ] (graph | digraph) [ ID ] '{' stmt_list '}':

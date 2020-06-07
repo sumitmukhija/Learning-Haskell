@@ -26,3 +26,6 @@ data NodeShape = Record | Plaintext | Plain | Trapezium
 data RelationshipShape = BoxArrow | Crow | Curve | ICurve 
                         | DiamondEdge | Dot |Inv | Normal 
                         | Tee | Vee | NoArrow deriving Show
+
+-- Modifier for clipping and showing outline of arrow
+data RelationshipModifier = O | R | L deriving Show
