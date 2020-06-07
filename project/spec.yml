@@ -1,9 +1,13 @@
 
 root:
     "Anything that starts with _ is not a language contruct"
+    - documentation:
+        - https://graphviz.org/doc/info/lang.html
     - examples:
         - https://renenyffenegger.ch/notes/tools/Graphviz/examples/index
-    digraph <optional_name>:
+     - [strict ] (graph | digraph) [ ID ] '{' stmt_list '}':
+        - "A graph is a collection of nodes and edges. By default no arrow heads."
+        - "Strict only allows one edge between two nodes."
         - _title:
             "represents the title related attribs in dot"
             - label:
@@ -31,8 +35,8 @@ root:
         - rank:
             - { rank=same rA sA tA }
             - rA sA tA are nodes
-        - _edge:
-            "denoted by an arrow"
+        - _edge/relatioships:
+            "denoted by an arrow for digraph. denoted by -- for graph"
             - _attribs:
                 - style:
                     - dashed
@@ -44,6 +48,8 @@ root:
                 - arrowhead:
                     - none
                     - ?
+                - label:
+                    -[Char]
             - _multiple_edges:
                 - A -> {B,C}
         - subgraph:
