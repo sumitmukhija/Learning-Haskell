@@ -61,7 +61,7 @@
 - class Dot inherits from Graph
 - Handles general representation
 
-![PyDot](https://github.com/sumitmukhija/Learning-Haskell/tree/master/project/classes.png)
+![PyDot](https://github.com/sumitmukhija/Learning-Haskell/blob/master/project/resources/classes.png)
 
 ### Mapping APIs
 
