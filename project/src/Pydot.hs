@@ -55,6 +55,11 @@ edgeFromSrcDst src dst = Edge src dst
 edgeFromPair:: ([Char],[Char]) -> Edge
 edgeFromPair (src,dst) = Edge src dst
 
--- Add ONE list of edges to graph
--- addListOfEdgesToGraph:: [Edge] -> [Edge]
--- addListOfEdgesToGraph edges = [addEdge edge | edge <- edges]
+-- Returns value of a key from edges in the graph state
+valueFromEdgeMap key = do 
+                       edgeState <- M.lookup "Edges" graph_state
+                       M.lookup key edgeState
+
+-- Creates key like source->destination. To be used with edge_state
+makeKeyForEdgeMapFromSrcDest:: [Char] -> [Char] -> [Char]
+makeKeyForEdgeMapFromSrcDest src dest = src++"->"++dest
