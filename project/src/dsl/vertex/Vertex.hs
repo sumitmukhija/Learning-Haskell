@@ -1,9 +1,11 @@
 module Vertex where
 
+    import Alias
+
     class VertexType v where
         vertex:: String -> v
 
-    data Vertex = Vertex String deriving Show
+    data Vertex = Vertex VertexIdentifier deriving Show
 
     instance VertexType Vertex where
-        vertex name = Vertex name
+        vertex identifier = Vertex identifier
