@@ -1,17 +1,18 @@
-{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 module Vertex where
 
     type VertexIdentifier = String
+    type VertexAttributes = [VertexAttribute]
 
     class VertexType v where
-        vertex:: VertexIdentifier -> [VertexAttribute] -> v
+        vertex:: VertexIdentifier -> VertexAttributes -> v
     
     class VertexType v => VertexAttributeType vat v where
         setVertexAttribute :: v -> vat -> v
         getVeretxAttributes :: v -> [vat]
 
 
-    data Vertex = Vertex VertexIdentifier [VertexAttribute] deriving Show
+    data Vertex = Vertex VertexIdentifier VertexAttributes deriving Show
     data VertexAttribute = VertexAttribute String deriving Show
 
     instance VertexType Vertex where
@@ -19,6 +20,6 @@ module Vertex where
 
     instance VertexAttributeType VertexAttribute Vertex where 
         setVertexAttribute (Vertex identifier attrs) attr =
-            (vertex identifier (attrs ++ [attr]))  :: Vertex
+            (vertex identifier (attrs ++ [attr]))
         
-        getVeretxAttributes (Vertex identifier attrs) = attrs
+        getVeretxAttributes (Vertex _ attrs) = attrs
