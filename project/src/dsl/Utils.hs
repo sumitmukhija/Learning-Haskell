@@ -20,8 +20,3 @@ module Utils where
 
     addEdgeBundleToExistingEdges Nothing edge = [edgeBundleFromEdge edge]
     addEdgeBundleToExistingEdges (Just edges) edge = edges ++ [edgeBundleFromEdge edge]
-
-    -- 
-    graphTypeBasedOnDirected isDirected = if isDirected then "Digraph" else "Graph"
-    
-    -- 

@@ -5,13 +5,23 @@ module Language where
     import Edge
     import Graph
     import Utils
+    import Attribs
 
-    -- data Graph = Graph GraphVertices GraphEdges GraphAttributes deriving Show
+    data Printer = Printer Graph deriving Show
+
+    instance GraphType Printer where
+        emptyGraph = Printer (emptyGraph :: Graph)
+        attachVertex v (Printer g) = Printer (attachVertex v g)
+        attachEdge e (Printer g) = Printer (attachEdge e g)
+        attachAttribute ga (Printer g) = Printer (attachAttribute ga g)
+    
+    graphString (Printer (Graph Nothing Nothing Nothing)) = "graph {}"
+    graphString (Printer (Graph vertices edges attribs)) = "graph!"
 
     -- Test elements 
-    v1 = vertex "Inventory" [VertexAttribute "Placeholder-1"] :: Vertex
-    v2 = vertex "Store" [VertexAttribute "Placeholder-2"] :: Vertex
-    v3 = vertex "Customer" [VertexAttribute "Placeholder-3"] :: Vertex
+    v1 = vertex "Inventory" [VNone] :: Vertex
+    v2 = vertex "Store" [VNone] :: Vertex
+    v3 = vertex "Customer" [VNone] :: Vertex
 
     e1 = edge v1 v2 [EdgeAttribute "EA-1"] :: Edge
     e2 = edge v2 v3 [EdgeAttribute "EA-2"] :: Edge

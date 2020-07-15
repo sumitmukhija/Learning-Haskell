@@ -25,6 +25,6 @@ module Edge where
             (edge v1 v2 (attrs ++ [attr]))
     
 
-    -- Helper functions
+    -- Helper function
     -- Returns a string with `a-b` for two vertices with identifier a and b
     edgeIdentifierFromVertices (Vertex id1 _) (Vertex id2 _) = id1++"-"++id2
