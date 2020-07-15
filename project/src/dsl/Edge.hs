@@ -2,7 +2,6 @@
 module Edge where
     
     import Vertex
-    import Utils
 
     type EdgeIdentifier = String
     type EdgeAttributes = [EdgeAttribute]
@@ -25,3 +24,7 @@ module Edge where
         setEdgeAttribute (Edge v1 v2 _ attrs) attr = 
             (edge v1 v2 (attrs ++ [attr]))
     
+
+    -- Helper functions
+    -- Returns a string with `a-b` for two vertices with identifier a and b
+    edgeIdentifierFromVertices (Vertex id1 _) (Vertex id2 _) = id1++"-"++id2
