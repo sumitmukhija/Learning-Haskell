@@ -19,7 +19,6 @@ module Vertex where
         vertex identifier attributes = Vertex identifier attributes
 
     instance VertexAttributeType VertexAttribute Vertex where 
-        
         setVertexAttribute (Vertex identifier Nothing) attr = 
             (vertex identifier (Just [attr]))
         setVertexAttribute (Vertex identifier (Just attrs)) attr =

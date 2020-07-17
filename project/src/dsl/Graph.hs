@@ -5,7 +5,7 @@ module Graph where
     import Edge
 
     type GraphIdentifier = String
-    type EdgeBundle = (VertexIdentifier, VertexIdentifier, EdgeAttributes)
+    type EdgeBundle = (VertexIdentifier, VertexIdentifier, Maybe EdgeAttributes)
     type VertexBundle = (VertexIdentifier, Maybe VertexAttributes)
     type EdgesInGraph = [EdgeBundle]
     type VerticesInGraph = [VertexBundle]

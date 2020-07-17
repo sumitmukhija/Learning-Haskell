@@ -23,8 +23,8 @@ module Language where
     v2 = vertex "Store" (Just [VtxLabelLoc Top]) :: Vertex
     v3 = vertex "Customer" Nothing :: Vertex
 
-    e1 = edge v1 v2 [EdgeAttribute "EA-1"] :: Edge
-    e2 = edge v2 v3 [EdgeAttribute "EA-2"] :: Edge
-    e3 = edge v3 v2 [EdgeAttribute "EA-2"] :: Edge
+    e1 = edge v1 v2 (Just [EdShape Dot]) :: Edge
+    e2 = edge v2 v3 (Just [EdShape NoShape]) :: Edge
+    e3 = edge v3 v2 (Just [EdStyle Dashed]) :: Edge
     
     g1 = emptyGraph :: Graph
