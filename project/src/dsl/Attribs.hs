@@ -1,9 +1,10 @@
 module Attribs where
 
+    -- Attributes common to multiple entities
     data LabelLocation = Top | Bottom | Center deriving Show
     data Style = Dashed | Black | Invis deriving Show
 
-
+    -- Vertex related attribs
     data VertexShape = Box | Oval | Plaintext deriving Show
     data VertexAttribute =  VtxShape VertexShape | 
                             VtxArea Float |
@@ -11,6 +12,7 @@ module Attribs where
                             VtxLabelLoc LabelLocation |
                             VtxStyle Style deriving Show
 
+    -- Edge related attribs
     data EdgeArrowShape = Normal | Dot | Tee | Empty | NoShape deriving Show
     data EdgeDirection = Forward | NoDirection deriving Show
 
@@ -19,4 +21,8 @@ module Attribs where
                          EdDirection EdgeDirection |
                          EdStyle Style deriving Show
 
+    -- Graph related attribs
+    data GraphAttribute = Strict Bool | 
+                          Directed Bool | 
+                          Landscape Bool deriving Show
 
