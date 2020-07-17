@@ -6,7 +6,7 @@ module Graph where
 
     type GraphIdentifier = String
     type EdgeBundle = (VertexIdentifier, VertexIdentifier, EdgeAttributes)
-    type VertexBundle = (VertexIdentifier, VertexAttributes)
+    type VertexBundle = (VertexIdentifier, Maybe VertexAttributes)
     type EdgesInGraph = [EdgeBundle]
     type VerticesInGraph = [VertexBundle]
     type GraphAttributes = [GraphAttribute]

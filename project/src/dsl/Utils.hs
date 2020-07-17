@@ -9,7 +9,8 @@ module Utils where
     edgeBundleFromEdge (Edge (Vertex id1 _) (Vertex id2 _) eId eAttrs) = (id1, id2, eAttrs)
 
     addVertexBundleToExistingVertices:: 
-        Maybe [(VertexIdentifier, VertexAttributes)] -> Vertex ->[(VertexIdentifier, VertexAttributes)]
+        Maybe [(VertexIdentifier, (Maybe VertexAttributes))] -> 
+            Vertex -> [(VertexIdentifier, (Maybe VertexAttributes))]
     addVertexBundleToExistingVertices Nothing vertex = 
         [vertexBundleFromVertex vertex]
     addVertexBundleToExistingVertices (Just vertices) vertex = 

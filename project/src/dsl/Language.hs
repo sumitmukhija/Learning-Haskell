@@ -19,9 +19,9 @@ module Language where
     graphString (Printer (Graph vertices edges attribs)) = "graph!"
 
     -- Test elements 
-    v1 = vertex "Inventory" [VNone] :: Vertex
-    v2 = vertex "Store" [VNone] :: Vertex
-    v3 = vertex "Customer" [VNone] :: Vertex
+    v1 = vertex "Inventory" (Just [VtxFillColour "red"]) :: Vertex
+    v2 = vertex "Store" (Just [VtxLabelLoc Top]) :: Vertex
+    v3 = vertex "Customer" Nothing :: Vertex
 
     e1 = edge v1 v2 [EdgeAttribute "EA-1"] :: Edge
     e2 = edge v2 v3 [EdgeAttribute "EA-2"] :: Edge
