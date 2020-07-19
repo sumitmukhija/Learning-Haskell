@@ -3,7 +3,9 @@ module Graph where
     import Utils
     import Vertex
     import Edge
+    import Attribs
 
+    -- Alias for commonly used data types
     type GraphIdentifier = String
     type EdgeBundle = (VertexIdentifier, VertexIdentifier, Maybe EdgeAttributes)
     type VertexBundle = (VertexIdentifier, Maybe VertexAttributes)
@@ -20,7 +22,6 @@ module Graph where
     data Graph = 
         Graph (Maybe EdgesInGraph) (Maybe VerticesInGraph) (Maybe GraphAttributes) 
         deriving Show
-    data GraphAttribute = GraphAttribute String deriving Show
 
     instance GraphType Graph where
         -- Returns an empty graph with no edges, no vertices & no attributes.

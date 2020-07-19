@@ -24,5 +24,6 @@ module Attribs where
     -- Graph related attribs
     data GraphAttribute = Strict Bool | 
                           Directed Bool | 
+                          GraphName String |
                           Landscape Bool deriving Show
 

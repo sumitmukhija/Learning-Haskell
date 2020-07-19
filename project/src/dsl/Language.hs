@@ -6,17 +6,7 @@ module Language where
     import Graph
     import Utils
     import Attribs
-
-    data Printer = Printer Graph deriving Show
-
-    instance GraphType Printer where
-        emptyGraph = Printer (emptyGraph :: Graph)
-        attachVertex v (Printer g) = Printer (attachVertex v g)
-        attachEdge e (Printer g) = Printer (attachEdge e g)
-        attachAttribute ga (Printer g) = Printer (attachAttribute ga g)
-    
-    graphString (Printer (Graph Nothing Nothing Nothing)) = "graph {}"
-    graphString (Printer (Graph vertices edges attribs)) = "graph!"
+    import Printer
 
     -- Test elements 
     v1 = vertex "Inventory" (Just [VtxFillColour "red"]) :: Vertex
