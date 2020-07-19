@@ -14,6 +14,10 @@ module Edge where
         setEdgeAttribute :: e -> eat -> e
         getEdgeAttributes :: e -> Maybe [eat]
 
+    -- class (VertexType v) => EdgeAttributeType eat v where
+    --     setEdgeAttribute :: v -> v -> eat -> e
+    --     getEdgeAttributes :: v -> Maybe [eat]
+
     data Edge = Edge Vertex Vertex EdgeIdentifier (Maybe EdgeAttributes) deriving Show
 
     instance EdgeType Edge Vertex where 
