@@ -5,9 +5,11 @@ module Vertex where
 
     type VertexIdentifier = String
     type VertexAttributes = [VertexAttribute]
+    type VertexBundle = (VertexIdentifier, Maybe VertexAttributes)
 
     class VertexType v where
         vertex:: VertexIdentifier -> (Maybe VertexAttributes) -> v
+        vertexBundleFromVertex:: v -> VertexBundle
     
     class VertexType v => VertexAttributeType vat v where
         setVertexAttribute :: v -> vat -> v
@@ -17,6 +19,8 @@ module Vertex where
 
     instance VertexType Vertex where
         vertex identifier attributes = Vertex identifier attributes
+        vertexBundleFromVertex (Vertex identifier attributes) = 
+            (identifier, attributes)
 
     instance VertexAttributeType VertexAttribute Vertex where 
         setVertexAttribute (Vertex identifier Nothing) attr = 
