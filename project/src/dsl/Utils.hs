@@ -15,5 +15,6 @@ module Utils where
     addGraphAttribToExistingAttribs (Just attribs) attrib = attribs ++ [attrib]
 
     -- Adds an edge bundle to the existing edges. Uses edgeBundleFromEdge in this module
-    addEdgeBundleToExistingEdges Nothing edge = [edgeBundleFromEdge edge]
+    addEdgeBundleToExistingEdges:: (EdgeType e v) => Maybe [EdgeBundle] -> e -> [EdgeBundle]
+    addEdgeBundleToExistingEdges Nothing edge = undefined
     addEdgeBundleToExistingEdges (Just edges) edge = undefined

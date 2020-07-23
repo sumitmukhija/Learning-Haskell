@@ -10,6 +10,7 @@ module Vertex where
     class VertexType v where
         vertex:: VertexIdentifier -> (Maybe VertexAttributes) -> v
         vertexBundleFromVertex:: v -> VertexBundle
+        edgeIdentifierFromVertices:: v -> v -> String
     
     class VertexType v => VertexAttributeType vat v where
         setVertexAttribute :: v -> vat -> v
@@ -21,6 +22,7 @@ module Vertex where
         vertex identifier attributes = Vertex identifier attributes
         vertexBundleFromVertex (Vertex identifier attributes) = 
             (identifier, attributes)
+        edgeIdentifierFromVertices (Vertex id1 _) (Vertex id2 _) = id1++"-"++id2
 
     instance VertexAttributeType VertexAttribute Vertex where 
         setVertexAttribute (Vertex identifier Nothing) attr = 

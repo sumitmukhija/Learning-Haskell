@@ -1,3 +1,5 @@
+{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 module Graph where
 
@@ -12,23 +14,23 @@ module Graph where
     type VerticesInGraph = [VertexBundle]
     type GraphAttributes = [GraphAttribute]
 
-    class GraphType g where
+    class (VertexType v, EdgeType e v) => GraphType g v e | v e -> g where
         emptyGraph :: g
-        attachEdge :: (EdgeType e v) => e -> g -> g
-        attachVertex :: (VertexType v) => v -> g -> g
+        attachEdge :: e -> g -> g
+        attachVertex :: v -> g -> g
         attachAttribute:: GraphAttribute -> g -> g
 
     data Graph = 
         Graph (Maybe EdgesInGraph) (Maybe VerticesInGraph) (Maybe GraphAttributes) 
         deriving Show
 
-    instance GraphType Graph where
+    instance GraphType Graph Vertex Edge where
         -- Returns an empty graph with no edges, no vertices & no attributes.
         emptyGraph = Graph Nothing Nothing Nothing
 
-        -- -- Returns a new graph by adding given edge to the existing edges 
-        -- attachEdge edge (Graph edges vertices attrs) = 
-        --     Graph (Just (addEdgeBundleToExistingEdges edges edge)) vertices attrs
+        -- Returns a new graph by adding given edge to the existing edges 
+        attachEdge edge (Graph edges vertices attrs) = undefined
+        --  Graph (Just (addEdgeBundleToExistingEdges edges edge)) vertices attrs
 
         -- Returns a new graph by adding given vertex to the existing vertices 
         attachVertex vertex (Graph edges vertices attrs) =
