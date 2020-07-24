@@ -1,4 +1,4 @@
-{-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE AllowAmbiguousTypes #-}
 module Graph where
@@ -14,7 +14,7 @@ module Graph where
     type VerticesInGraph = [VertexBundle]
     type GraphAttributes = [GraphAttribute]
 
-    class (VertexType v, EdgeType e v) => GraphType g v e | v e -> g where
+    class (VertexType v, EdgeType e v) => GraphType g where
         emptyGraph :: g
         attachEdge :: e -> g -> g
         attachVertex :: v -> g -> g
@@ -24,7 +24,7 @@ module Graph where
         Graph (Maybe EdgesInGraph) (Maybe VerticesInGraph) (Maybe GraphAttributes) 
         deriving Show
 
-    instance GraphType Graph Vertex Edge where
+    instance GraphType Graph where
         -- Returns an empty graph with no edges, no vertices & no attributes.
         emptyGraph = Graph Nothing Nothing Nothing
 
