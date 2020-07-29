@@ -1,3 +1,13 @@
+# Latest iteration
+
+### Changes
+- `Graph.hs` now has a single module implementation of the language.
+- The vertices are now represented by strings and edges by two strings. Removed classes & data for them
+- Previous `Graph.hs` implementation is now in `GraphOld.hs`
+- Relevant files at this point - `Graph.hs` and `Attribs.hs`
+- working - `vertex`, `edge`, `merge`, getters and setters for vertex and edge
+
+
 # 1. Modules
 
 | Module  | File   | Description   | Imports |
@@ -16,3 +26,5 @@
 - alias using `type`
 - classes and instances
 - pattern matching in functions
+
+
