@@ -27,3 +27,12 @@ module Attribs where
                           GraphName String |
                           Landscape Bool deriving Show
 
+    -- String representations
+    stringReprForVertexAttrib (VtxShape shape) = "shape="++(show shape)
+    stringReprForVertexAttrib (VtxArea area) = "area="++(show area)
+    stringReprForVertexAttrib (VtxFillColour colour) = 
+        "color="++(show colour)
+    stringReprForVertexAttrib (VtxLabelLoc location) = 
+        "labelloc="++show ((show location)!!0)
+    stringReprForVertexAttrib (VtxStyle style) = 
+        "labelloc="++(show style)

@@ -19,6 +19,8 @@ module Graph where
     data G = G  [(String, [VertexAttribute])]
                 [((String,String),[EdgeAttribute])]
                 [GraphAttribute] deriving Show
+        
+    data DotRepr = DotRepr String
     
     instance Graph G where
         -- Vertex
@@ -49,10 +51,17 @@ module Graph where
                 zes = xes ++ yes
                 zattrs = xattrs ++ yattrs
     
+    instance Graph DotRepr where
+        vertex vtx = dotGraph (vertex vtx :: G)
+    
+
+    dotGraph:: G -> DotRepr
+    dotGraph (G vs es as) = undefined
+    
 
 -- Helper functions
 
-    vs = [("A", [VtxShape Box]), ("B", [VtxShape Box])]
+    vs = [("A", [VtxShape Box]), ("B", [VtxArea 2.8, VtxShape Box])]
     va = VtxArea 1.0
     vb = VtxShape Box
     es = [(("A", "B"), [EdShape Dot])]
@@ -61,6 +70,7 @@ module Graph where
     ge = edge "C" "D"
     g1 = setVertexAttribute "A" va (g::G)
     g2 = setEdgeAttribute "C" "D" ea (ge::G)
+    t = VtxLabelLoc Top
 
     appendVertexAttribute vertexPair vtxAttr = do
         let (vtx, vAts) = vertexPair
@@ -107,3 +117,11 @@ module Graph where
     extractAttributesFromNonEmptyEdge eList=do
         let (_ , eAttrs) = eList!!0
         return eAttrs!!0
+
+    verticesToString vs = do
+        let vtxString = ""
+        [vtx ++ " " ++ (vertexAttributesToString vAts) | (vtx, vAts) <- vs]
+
+    vertexAttributesToString vAttrs = do
+        show [stringReprForVertexAttrib vAttr | vAttr <- vAttrs]
+    
