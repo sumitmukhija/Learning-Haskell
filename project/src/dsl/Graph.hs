@@ -15,6 +15,10 @@ module Graph where
     
         -- Graph
         merge:: g -> g -> g
+        setGraphAttribute:: GraphAttribute -> g -> g
+        getGraphAttributes:: g -> [GraphAttribute]
+        getGraphEdges:: g -> [((String,String),[EdgeAttribute])]
+        getGraphVertices:: g -> [(String, [VertexAttribute])]
 
     data G = G  [(String, [VertexAttribute])]
                 [((String,String),[EdgeAttribute])]
@@ -43,35 +47,29 @@ module Graph where
             if length tuples == 0 then undefined
             else extractAttributesFromNonEmptyEdge tuples
 
-
         -- Graph
         merge (G xvs xes xattrs) (G yvs yes yattrs) = 
             G zvs zes zattrs where 
                 zvs = xvs ++ yvs
                 zes = xes ++ yes
                 zattrs = xattrs ++ yattrs
+        setGraphAttribute ga (G vs es gAttr) = 
+            G vs es gAttr' where 
+                gAttr' = gAttr ++ [ga]
+        getGraphAttributes (G _ _ gAttr) = 
+            gAttr
+        getGraphVertices (G v _ _ ) = v
+        getGraphEdges (G _ e _ ) = e
+
     
     instance Graph DotRepr where
         vertex vtx = dotGraph (vertex vtx :: G)
     
-
     dotGraph:: G -> DotRepr
     dotGraph (G vs es as) = undefined
     
-
--- Helper functions
-
-    vs = [("A", [VtxShape Box]), ("B", [VtxArea 2.8, VtxShape Box])]
-    va = VtxArea 1.0
-    vb = VtxShape Box
-    es = [(("A", "B"), [EdShape Dot])]
-    ea = EdDirection Forward
-    g = vertex "A" 
-    ge = edge "C" "D"
-    g1 = setVertexAttribute "A" va (g::G)
-    g2 = setEdgeAttribute "C" "D" ea (ge::G)
-    t = VtxLabelLoc Top
-
+ 
+-- Helper entities
     appendVertexAttribute vertexPair vtxAttr = do
         let (vtx, vAts) = vertexPair
         let vAts' = vAts ++ [vtxAttr]
@@ -124,4 +122,17 @@ module Graph where
 
     vertexAttributesToString vAttrs = do
         show [stringReprForVertexAttrib vAttr | vAttr <- vAttrs]
+
+    
+--  vertices, edges, etc to try in GHCi
+    vs = [("A", [VtxShape Box]), ("B", [VtxArea 2.8, VtxShape Box])]
+    va = VtxArea 1.0
+    vb = VtxShape Box
+    es = [(("A", "B"), [EdShape Dot])]
+    ea = EdDirection Forward
+    g = vertex "A" 
+    ge = edge "C" "D"
+    g1 = setVertexAttribute "A" va (g::G)
+    g2 = setEdgeAttribute "C" "D" ea (ge::G)
+    t = VtxLabelLoc Top
     
