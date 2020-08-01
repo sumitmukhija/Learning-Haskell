@@ -61,13 +61,7 @@ module Graph where
         getGraphVertices (G v _ _ ) = v
         getGraphEdges (G _ e _ ) = e
 
-    
-    instance Graph DotRepr where
-        vertex vtx = dotGraph (vertex vtx :: G)
-    
-    dotGraph:: G -> DotRepr
-    dotGraph (G vs es as) = undefined
-    
+
  
 -- Helper entities
     appendVertexAttribute vertexPair vtxAttr = do
@@ -91,15 +85,16 @@ module Graph where
     updateVertices vtxId vtxAttr vtxList= do
         let pairs = filterVertex vtxId vtxList
         if length pairs == 0 then
-            -- TODO:
-            undefined
+            error ("Error setting vertex attribute. Vertex with id "
+            ++vtxId++" does not exist in the graph.")
         else
             appendVertexAttribute (pairs!!0) vtxAttr
 
     updateEdges vtx1 vtx2 eAttr eList= do
         let tuples = filterEdge vtx1 vtx2 eList
         if length tuples == 0 then
-            -- TODO:
+            error ("Error setting edge attribute. An edge between the vertices '"
+            ++vtx1++"' and '"++vtx2++"' does not exist.")
             undefined
         else
             appendEdgeAttribute (tuples!!0) eAttr
