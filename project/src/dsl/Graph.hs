@@ -38,7 +38,7 @@ module Graph where
             else extractAttributesFromNonEmptyVertex pairs
 
         -- Edge
-        edge vtx1 vtx2 = G [] [((vtx1, vtx2), [])] []
+        edge vtx1 vtx2 = G [(vtx1, []), (vtx2, [])] [((vtx1, vtx2), [])] []
         setEdgeAttribute vtx1 vtx2 eAttr (G vs es as)=
             G vs es' as where 
                 es' = updateEdges vtx1 vtx2 eAttr es
