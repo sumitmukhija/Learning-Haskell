@@ -35,4 +35,21 @@ module Attribs where
     stringReprForVertexAttrib (VtxLabelLoc location) = 
         "labelloc="++show ((show location)!!0)
     stringReprForVertexAttrib (VtxStyle style) = 
-        "labelloc="++(show style)
+        "style="++(show style)
+
+
+    stringReprForEdgeAttrib (EdShape shape) = "shape="++(show shape)
+    stringReprForEdgeAttrib (EdLabelLoc location) = "labelloc="++show ((show location)!!0)
+    stringReprForEdgeAttrib (EdDirection direction) = "direction="++(show direction)
+    stringReprForEdgeAttrib (EdStyle style) =  "style="++(show style)
+
+
+    stringReprForGraphAttrib (Directed directed) = if directed==True then
+                                                        "digraph "
+                                                    else
+                                                        "graph "
+    stringReprForGraphAttrib (GraphName name) = show name
+    stringReprForGraphAttrib (Strict isStrict) = if isStrict==True then
+                                                    "strict "
+                                                else
+                                                    ""
