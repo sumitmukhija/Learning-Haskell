@@ -34,8 +34,8 @@ module Instances where
         -- Graph
         merge (G xvs xes xattrs) (G yvs yes yattrs) = 
             G zvs zes zattrs where 
-                zvs = xvs ++ yvs
-                zes = xes ++ yes
+                zvs = mergeVertices xvs yvs
+                zes = mergeEdges xes yes
                 zattrs = xattrs ++ yattrs
         setGraphAttribute ga (G vs es gAttr) = 
             G vs es gAttr' where 
@@ -52,9 +52,11 @@ module Instances where
 
 --  vertices, edges, etc to try in GHCi
     vs = [("A", [VtxShape Box]), ("B", [VtxArea 2.8, VtxShape Box])]
+    vs2 = [("A", [VtxArea 2.1]), ("C", [])]
     va = VtxArea 1.0
     vb = VtxShape Box
     es = [(("A", "B"), [EdShape Dot])]
+    es2 = [(("A", "B"), [EdLabelLoc Top])]
     ea = EdDirection Forward
     g = vertex "A" 
     ga = [(Strict True), (Directed True)]

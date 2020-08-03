@@ -44,8 +44,6 @@ module Utils where
     
     removeEdgeFromExistingEdgeList vtx1 vtx2 es = 
         [((v1, v2), eAts) | ((v1, v2), eAts) <- es, (v1, v2) /= (vtx1, vtx2)]
-
-    
     
     getAttributesFromPair pair= do
         let (_ , attributes) = pair
@@ -79,3 +77,37 @@ module Utils where
     graphAttributesToString [] = [unwords ["graph G"]]
     graphAttributesToString grfAtrs = do
         [unwords [stringReprForGraphAttrib grfAtr | (grfAtr) <- grfAtrs]]
+
+    mergeEachVertexPair vtxPair ys = do
+        let (vtxX, vtxAttrX) = vtxPair
+        let [(vtxY, vtxAttrY)] = filterVertex vtxX ys
+        (vtxX, vtxAttrX ++ vtxAttrY)
+        
+    mergeEachEdgeTuple edgeTuple ys = do
+        let ((vtxX1, vtxX2), eAttrX) = edgeTuple
+        let [(_ , eAttrY)] = filterEdge vtxX1 vtxX2 ys
+        ((vtxX1, vtxX2), eAttrX ++ eAttrY)
+
+    mergeVertices xs ys  =  (mergeCommonVertices xs ys) ++ 
+                            (nonCommonVertices xs ys) ++ 
+                            (nonCommonVertices ys xs)
+    
+    commonVertices xs ys = filter(\(vx, vax) -> vx `elem` (map fst ys)) xs
+
+    mergeCommonVertices xs ys =  
+        map (\vtxPair -> mergeEachVertexPair vtxPair ys) 
+        (commonVertices xs ys)
+
+    nonCommonVertices l1 l2 = filter(\(vx, vax) -> vx `notElem` (map fst l1)) l2
+
+    mergeEdges xs ys =  (mergeCommonEdges xs ys) ++ 
+                        (nonCommonEdges xs ys) ++
+                        (nonCommonEdges ys xs)
+
+    commonEdges xs ys = filter(\((vx1, vx2), eax) -> (vx1, vx2) `elem` (map fst ys)) xs
+
+    mergeCommonEdges xs ys =
+        map (\edgeTuple -> mergeEachEdgeTuple edgeTuple ys)
+        (commonEdges xs ys)
+    
+    nonCommonEdges l1 l2 = filter(\((vx1, vx2), eax) -> (vx1, vx2) `notElem` (map fst l1)) l2
