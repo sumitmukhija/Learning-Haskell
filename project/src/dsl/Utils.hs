@@ -8,7 +8,7 @@ module Utils where
         let vAts' = vAts ++ [vtxAttr]
         let pair = (vtx, vAts')
         return pair
-    
+
     appendEdgeAttribute edgeTuple edgAttr = do
         let ((v1, v2), eAts) = edgeTuple
         let eAts' = eAts ++ [edgAttr]
@@ -59,19 +59,18 @@ module Utils where
 
     verticesToString vs = do
         let vtxString = ""
-        [vtx ++ " " ++ (vertexAttributesToString vAts) | 
+        [vtx ++ "  [" ++ (vertexAttributesToString vAts) ++ "]" | 
             (vtx, vAts) <- vs]
 
-    vertexAttributesToString vAttrs = do
-        show [stringReprForVertexAttrib vAttr | vAttr <- vAttrs]
+    vertexAttributesToString vAttrs = 
+        concat [stringReprForVertexAttrib vAttr | vAttr <- vAttrs]
 
-    edgesToString es = do 
-        let edString = ""
-        [v1 ++ " -> " ++ v2 ++ " "++ (edgeAttributesToString eAts) 
+    edgesToString es = [v1 ++ " -> " ++ v2 ++ " ["++ 
+            (edgeAttributesToString eAts) ++"]"
             | ((v1, v2), eAts) <- es ]
         
     edgeAttributesToString eAttrs = do
-        show [stringReprForEdgeAttrib eAttr | eAttr <- eAttrs]
+        concat [stringReprForEdgeAttrib eAttr ++ "," | eAttr <- eAttrs]
     
     -- TODO: BUG!!
     graphAttributesToString [] = [unwords ["graph G"]]

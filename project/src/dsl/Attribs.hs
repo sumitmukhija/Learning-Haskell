@@ -1,16 +1,16 @@
 module Attribs where
 
     -- Attributes common to multiple entities
-    data LabelLocation = Top | Bottom | Center deriving Show
-    data Style = Dashed | Black | Invis deriving Show
+    data LabelLocation = Top | Bottom | Center deriving (Show, Eq)
+    data Style = Dashed | Black | Invis deriving (Show, Eq)
 
     -- Vertex related attribs
-    data VertexShape = Box | Oval | Plaintext deriving Show
+    data VertexShape = Box | Oval | Plaintext deriving (Show, Eq)
     data VertexAttribute =  VtxShape VertexShape | 
                             VtxArea Float |
                             VtxFillColour String |
                             VtxLabelLoc LabelLocation |
-                            VtxStyle Style deriving Show
+                            VtxStyle Style deriving (Show, Eq)
 
     -- Edge related attribs
     data EdgeArrowShape = Normal | Dot | Tee | Empty | NoShape deriving Show
