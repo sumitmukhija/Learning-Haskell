@@ -32,6 +32,7 @@ module Instances where
             else extractAttributesFromNonEmptyEdge tuples
 
         -- Graph
+        empty = G [] [] []
         merge (G xvs xes xattrs) (G yvs yes yattrs) = 
             G zvs zes zattrs where 
                 zvs = mergeVertices xvs yvs
@@ -45,6 +46,11 @@ module Instances where
         getGraphVertices (G v _ _ ) = v
         getGraphEdges (G _ e _ ) = e
 
+        -- Misc
+        numberOfVertices (G vs _ _) = length vs
+        numberOfEdges (G _ es _) = length es
+        connectedNodes (G _ es _) startingNode = 
+            getConnectedNodes es startingNode
     
     generateDOT (G vs es as) = unlines (graphAttributesToString as ++ 
                                         verticesToString vs ++ 

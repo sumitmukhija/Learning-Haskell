@@ -77,6 +77,7 @@ module Utils where
     graphAttributesToString grfAtrs = do
         [unwords [stringReprForGraphAttrib grfAtr | (grfAtr) <- grfAtrs]]
 
+    mergeEachVertexPair vtxPair [] = undefined
     mergeEachVertexPair vtxPair ys = do
         let (vtxX, vtxAttrX) = vtxPair
         let [(vtxY, vtxAttrY)] = filterVertex vtxX ys
@@ -110,3 +111,9 @@ module Utils where
         (commonEdges xs ys)
     
     nonCommonEdges l1 l2 = filter(\((vx1, vx2), eax) -> (vx1, vx2) `notElem` (map fst l1)) l2
+
+    getConnectedNodes es start = 
+        [ vb | ((va, vb), _) <- es, va == start] ++ [ va | ((va, vb), _) <- es, vb == start] 
+
+    getIsReachable es start end = 
+        undefined

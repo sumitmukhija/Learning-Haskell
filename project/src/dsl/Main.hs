@@ -4,5 +4,6 @@ module Main (main) where
     import Utils
     import Attribs
     import Instances
+    import DemoGraphs
 
     main = return ()

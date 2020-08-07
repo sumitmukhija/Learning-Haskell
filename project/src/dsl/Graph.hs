@@ -14,8 +14,15 @@ module Graph where
         getEdgeAttributes:: String -> String -> g -> [EdgeAttribute]
     
         -- Graph
+        empty:: g
         merge:: g -> g -> g
         setGraphAttribute:: GraphAttribute -> g -> g
         getGraphAttributes:: g -> [GraphAttribute]
         getGraphEdges:: g -> [((String,String),[EdgeAttribute])]
         getGraphVertices:: g -> [(String, [VertexAttribute])]
+
+        -- Misc.
+        numberOfVertices:: g -> Int
+        numberOfEdges:: g -> Int
+        connectedNodes:: g -> String -> [String]
+        
