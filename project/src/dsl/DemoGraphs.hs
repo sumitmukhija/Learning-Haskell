@@ -1,7 +1,10 @@
 module DemoGraphs where
 
     import Graph
+    import Attribs
 
+
+-- Example 1 - Single hidden layer Neural Network
     neuralNetworkWithNeurons:: Graph g => Int -> Int -> Int -> g
     neuralNetworkWithNeurons inputNeurons hiddenNeurons outputNeurons=
         neuralNet where 
@@ -10,7 +13,8 @@ module DemoGraphs where
             output = neuralNetOutputLayer outputNeurons 
             inputToHiddenGraph = connectInputAndHiddenNeurons input hidden
             hiddenToOutputGraph = connectHiddenAndOutputNeurons hidden output
-            neuralNet = nnMergeVertices [hiddenToOutputGraph, inputToHiddenGraph]
+            merged = nnMergeVertices [hiddenToOutputGraph, inputToHiddenGraph]
+            neuralNet = setGraphAttribute (Directed True) merged
 
     connectInputAndHiddenNeurons:: Graph g => g -> g -> g
     connectInputAndHiddenNeurons inputLayer hiddenLayer = 
@@ -49,4 +53,30 @@ module DemoGraphs where
     nnGetVertex entity number = entity ++ " "++ (show number)
 
     nnMergeVertices:: Graph g => [g] -> g
-    nnMergeVertices vertices = foldr (\acc x -> merge acc x) (empty) vertices
+    nnMergeVertices vertices = mergeMultipleGraphs vertices
+
+-- Example 2 - Decision Tree
+    decisionTreeExample :: Graph g => g 
+    decisionTreeExample = (rootNode "petal width <= 0.8")
+
+    rootToLevelOne:: Graph g => g
+    rootToLevelOne = mergeMultipleGraphs ([(rootNode "petal width <= 0.8")] ++ levelOneNodes)
+
+    levelOneNodes:: Graph g => [g]
+    levelOneNodes = [(leafNode "Setosa"), (nonRootNode "petal size <= 4.95")]
+
+    levelTwoNodes:: Graph g => [g]
+    levelTwoNodes = [(nonRootNode "petal size <= 1.65"), (nonRootNode "petal size <= 5.05")]
+
+    rootNode:: Graph g => String -> g
+    rootNode split = treeNodeWithSplit split True
+
+    nonRootNode:: Graph g => String -> g
+    nonRootNode split = treeNodeWithSplit split False
+
+    leafNode:: Graph g => String -> g
+    leafNode classification = vertex classification
+
+    treeNodeWithSplit:: Graph g => String -> Bool -> g
+    treeNodeWithSplit splitCondition isRoot = vertex splitCondition
+

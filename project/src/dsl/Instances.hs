@@ -7,8 +7,6 @@ module Instances where
     data G = G  [(String, [VertexAttribute])]
                 [((String,String),[EdgeAttribute])]
                 [GraphAttribute] deriving Show
-        
-    data DotRepr = DotRepr String
 
     instance Graph G where
         -- Vertex
@@ -51,23 +49,13 @@ module Instances where
         numberOfEdges (G _ es _) = length es
         connectedNodes (G _ es _) startingNode = 
             getConnectedNodes es startingNode
-    
-    generateDOT (G vs es as) = unlines (graphAttributesToString as ++ 
-                                        verticesToString vs ++ 
-                                        edgesToString es)
+        hasLoop (G _ es _) = detectLoopInEdges es
+        mergeMultipleGraphs graphs = foldr (\acc x -> merge acc x) (empty) graphs
+        prettyPrint (G vs es as) = putStrLn (getPrettyPrinted vs es)
 
---  vertices, edges, etc to try in GHCi
-    vs = [("A", [VtxShape Box]), ("B", [VtxArea 2.8, VtxShape Box])]
-    vs2 = [("A", [VtxArea 2.1]), ("C", [])]
-    va = VtxArea 1.0
-    vb = VtxShape Box
-    es = [(("A", "B"), [EdShape Dot])]
-    es2 = [(("A", "B"), [EdLabelLoc Top])]
-    ea = EdDirection Forward
-    g = vertex "A" 
-    ga = [(Strict True), (Directed True)]
-    ge = edge "C" "D"
-    g1 = setVertexAttribute "A" va (g::G)
-    g2 = setEdgeAttribute "C" "D" ea (ge::G)
-    t = VtxLabelLoc Top
+        -- DOT
+        generateDOTFile graph = putStrLn (getDOT graph)
     
+    getDOT (G vs es as) = (unlines (graphAttributesToString as ++ 
+                                        verticesToString vs ++ 
+                                        edgesToString es True) ++ "}")

@@ -25,4 +25,10 @@ module Graph where
         numberOfVertices:: g -> Int
         numberOfEdges:: g -> Int
         connectedNodes:: g -> String -> [String]
+        hasLoop:: g -> Bool
+        mergeMultipleGraphs:: [g] -> g
+        prettyPrint:: g -> IO ()
+
+        -- Dot representation
+        generateDOTFile:: g -> IO ()        
         
