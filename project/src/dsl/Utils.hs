@@ -45,9 +45,8 @@ module Utils where
     removeEdgeFromExistingEdgeList vtx1 vtx2 es = 
         [((v1, v2), eAts) | ((v1, v2), eAts) <- es, (v1, v2) /= (vtx1, vtx2)]
     
-    getAttributesFromPair pair= do
-        let (_ , attributes) = pair
-        return attributes
+    getAttributesFromPair pair= attributes where
+        (_ , attributes) = pair
 
     extractAttributesFromNonEmptyVertex vtxList=do
         let (_, vAttrs) = vtxList!!0
@@ -56,6 +55,11 @@ module Utils where
     extractAttributesFromNonEmptyEdge eList=do
         let (_ , eAttrs) = eList!!0
         return eAttrs!!0
+    
+    isGraphDirected graphAttrs = 
+        if length [attr | attr <- graphAttrs, attr == (Directed True)] > 0
+            then True
+            else False
 
     verticesToString vs = 
         ["\""++vtx ++ "\"  [" ++ (vertexAttributesToString vAts) ++ "]" | 
@@ -73,7 +77,7 @@ module Utils where
             (edgeAttributesToString eAts) ++"]"
             | ((v1, v2), eAts) <- es ]
     
-    nondirectedEdgesToString es = [v1 ++ " -- " ++ v2 ++ " ["++ 
+    nondirectedEdgesToString es = ["\"" ++ v1 ++"\"" ++ " -- " ++ "\""++ v2 ++"\"" ++ " ["++ 
             (edgeAttributesToString eAts) ++"]"
             | ((v1, v2), eAts) <- es ]
     

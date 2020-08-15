@@ -18,6 +18,7 @@ module Attribs where
 
     data EdgeAttribute = EdShape EdgeArrowShape |
                          EdLabelLoc LabelLocation |
+                         EdLabel String |
                          EdDirection EdgeDirection |
                          EdStyle Style deriving Show
 
@@ -25,7 +26,7 @@ module Attribs where
     data GraphAttribute = Strict Bool | 
                           Directed Bool | 
                           GraphName String |
-                          Landscape Bool deriving Show
+                          Landscape Bool deriving (Show, Eq)
 
     -- String representations
     stringReprForVertexAttrib (VtxShape shape) = "shape="++(show shape)
@@ -42,3 +43,4 @@ module Attribs where
     stringReprForEdgeAttrib (EdLabelLoc location) = "labelloc="++show ((show location)!!0)
     stringReprForEdgeAttrib (EdDirection direction) = "direction="++(show direction)
     stringReprForEdgeAttrib (EdStyle style) =  "style="++(show style)
+    stringReprForEdgeAttrib (EdLabel text) =  "label="++(show text)

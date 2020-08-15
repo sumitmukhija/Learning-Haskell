@@ -58,4 +58,4 @@ module Instances where
     
     getDOT (G vs es as) = (unlines (graphAttributesToString as ++ 
                                         verticesToString vs ++ 
-                                        edgesToString es True) ++ "}")
+                                        edgesToString es (isGraphDirected as)) ++ "}")

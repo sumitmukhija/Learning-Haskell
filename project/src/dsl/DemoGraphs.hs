@@ -34,49 +34,53 @@ module DemoGraphs where
                     [(edge h o) | (h, _) <- hiddenNeurons, (o, _) <- outputNeurons]
                 hiddenToOutputGraph = nnMergeVertices hiddenToOutputEdges
 
-    neuralNetInputLayer:: Graph g => Int -> g
     neuralNetInputLayer noOfNeurons = 
         nnMergeVertices (nnGetNVerticesOfKind noOfNeurons "input")
 
-    neuralNetHiddenLayer:: Graph g => Int -> g
     neuralNetHiddenLayer noOfNeurons = 
         nnMergeVertices (nnGetNVerticesOfKind noOfNeurons "hidden")
 
-    neuralNetOutputLayer:: Graph g => Int -> g
     neuralNetOutputLayer noOfNeurons = 
         nnMergeVertices (nnGetNVerticesOfKind noOfNeurons "output")
 
-    nnGetNVerticesOfKind:: Graph g => Int -> String -> [g]
     nnGetNVerticesOfKind n kind = [vertex (nnGetVertex kind a)| a <- [1..n]]
 
-    nnGetVertex:: String -> Int -> String
     nnGetVertex entity number = entity ++ " "++ (show number)
 
-    nnMergeVertices:: Graph g => [g] -> g
     nnMergeVertices vertices = mergeMultipleGraphs vertices
 
 -- Example 2 - Decision Tree
-    decisionTreeExample :: Graph g => g 
-    decisionTreeExample = (rootNode "petal width <= 0.8")
+    leftSubtree root left = edge root left
+ 
+    rightSubtree root right = merge (edge root right) (rightSubtreeLevel2 right)
 
-    rootToLevelOne:: Graph g => g
-    rootToLevelOne = mergeMultipleGraphs ([(rootNode "petal width <= 0.8")] ++ levelOneNodes)
+    rightSubtreeLevel2 root = merge (edge root "length <= 5.05") (rightSubtreeLevel3 root)
+        
+    rightSubtreeLevel3 root = merge (rightSubtreeLevel3Right root) (rightSubtreeLevel3Left root) 
 
-    levelOneNodes:: Graph g => [g]
-    levelOneNodes = [(leafNode "Setosa"), (nonRootNode "petal size <= 4.95")]
+    rightSubtreeLevel3Left root = merge (merge (edge "Width <= 1.65" "Virginica") (edge root "Width <= 1.65")) 
+                                    (merge (edge "Width <= 1.65" "Versicolor") (edge root "Width <= 1.65"))
 
-    levelTwoNodes:: Graph g => [g]
-    levelTwoNodes = [(nonRootNode "petal size <= 1.65"), (nonRootNode "petal size <= 5.05")]
+    rightSubtreeLevel3Right root = (edge "length <= 5.05" "Virginica")
 
-    rootNode:: Graph g => String -> g
-    rootNode split = treeNodeWithSplit split True
+    colorLeafNodes tree = coloredTree where 
+        vertices = getGraphVertices tree
+        leafNodes = 
+            [setVertexAttribute v (VtxFillColour "green") tree| (v, _) <- vertices, 
+            v == "Virginica" || v == "Versicolor" || v == "Setosa"]
+        coloredTree = mergeMultipleGraphs leafNodes
+        
+    getCompleteTree root left right = merge (leftSubtree root left) (rightSubtree root right) 
 
-    nonRootNode:: Graph g => String -> g
-    nonRootNode split = treeNodeWithSplit split False
+    applyLabels tree = labelsApplied where
+        rootSitosa = setEdgeAttribute "width <= 0.8" "Setosa" (EdLabel "True") tree
+        subtree1 = setEdgeAttribute "width <= 0.8" "length <= 4.95" (EdLabel "False") rootSitosa
+        subtree2 = setEdgeAttribute "length <= 4.95" "Width <= 1.65" (EdLabel "True") subtree1
+        subtree3 = setEdgeAttribute "length <= 4.95" "length <= 5.05" (EdLabel "False") subtree2
+        subtree4 = setEdgeAttribute "length <= 5.05" "Virginica" (EdLabel "True or False") subtree3
+        subtree5 = setEdgeAttribute "Width <= 1.65" "Virginica" (EdLabel "False") subtree4
+        subtree6 = setEdgeAttribute "Width <= 1.65" "Versicolor" (EdLabel "True") subtree5
+        labelsApplied = subtree6
 
-    leafNode:: Graph g => String -> g
-    leafNode classification = vertex classification
-
-    treeNodeWithSplit:: Graph g => String -> Bool -> g
-    treeNodeWithSplit splitCondition isRoot = vertex splitCondition
-
+    decisionTree root left right = applyLabels (colorLeafNodes (getCompleteTree root left right))
+    
