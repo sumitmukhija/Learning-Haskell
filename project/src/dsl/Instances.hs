@@ -43,19 +43,4 @@ module Instances where
             gAttr
         getGraphVertices (G v _ _ ) = v
         getGraphEdges (G _ e _ ) = e
-
-        -- Misc
-        numberOfVertices (G vs _ _) = length vs
-        numberOfEdges (G _ es _) = length es
-        connectedNodes (G _ es _) startingNode = 
-            getConnectedNodes es startingNode
-        hasLoop (G _ es _) = detectLoopInEdges es
-        mergeMultipleGraphs graphs = foldr (\acc x -> merge acc x) (empty) graphs
-        prettyPrint (G vs es as) = putStrLn (getPrettyPrinted vs es)
-
-        -- DOT
-        generateDOTFile graph = putStrLn (getDOT graph)
-    
-    getDOT (G vs es as) = (unlines (graphAttributesToString as ++ 
-                                        verticesToString vs ++ 
-                                        edgesToString es (isGraphDirected as)) ++ "}")
+        

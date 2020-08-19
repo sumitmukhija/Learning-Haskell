@@ -55,47 +55,6 @@ module Utils where
     extractAttributesFromNonEmptyEdge eList=do
         let (_ , eAttrs) = eList!!0
         return eAttrs!!0
-    
-    isGraphDirected graphAttrs = 
-        if length [attr | attr <- graphAttrs, attr == (Directed True)] > 0
-            then True
-            else False
-
-    verticesToString vs = 
-        ["\""++vtx ++ "\"  [" ++ (vertexAttributesToString vAts) ++ "]" | 
-            (vtx, vAts) <- vs]
-
-    vertexAttributesToString vAttrs = 
-        concat [stringReprForVertexAttrib vAttr | vAttr <- vAttrs]
-
-    edgesToString es isDirected = 
-        if isDirected == True then directedEdgesToString es
-        else nondirectedEdgesToString es
-
-    directedEdgesToString es = 
-        ["\""++ v1 ++"\"" ++ " -> " ++ "\"" ++ v2 ++ "\"" ++ " ["++ 
-            (edgeAttributesToString eAts) ++"]"
-            | ((v1, v2), eAts) <- es ]
-    
-    nondirectedEdgesToString es = ["\"" ++ v1 ++"\"" ++ " -- " ++ "\""++ v2 ++"\"" ++ " ["++ 
-            (edgeAttributesToString eAts) ++"]"
-            | ((v1, v2), eAts) <- es ]
-    
-        
-    edgeAttributesToString eAttrs = 
-        concat [stringReprForEdgeAttrib eAttr ++ "," | eAttr <- eAttrs]
-    
-    graphAttributesToString [] = 
-        [unwords ["graph G{"]]
-    graphAttributesToString grfAtrs = 
-        [unwords [(strictGraph grfAtr) ++ (directedGraph grfAtr) | (grfAtr) <- grfAtrs]]
-
-    strictGraph (Strict isStrict) = if isStrict == True then "strict " else ""
-    strictGraph _ = ""
-
-    directedGraph  (Directed directed) = 
-        if directed == True then "digraph G{" else "graph G{"
-    directedGraph _ = "" 
 
     mergeEachVertexPair vtxPair [] = undefined
     mergeEachVertexPair vtxPair ys = do
@@ -131,16 +90,4 @@ module Utils where
         (commonEdges xs ys)
     
     nonCommonEdges l1 l2 = filter(\((vx1, vx2), eax) -> (vx1, vx2) `notElem` (map fst l1)) l2
-
-    getConnectedNodes es start = 
-        [ vb | ((va, vb), _) <- es, va == start] ++ [ va | ((va, vb), _) <- es, vb == start] 
-
-    detectLoopInEdges es = 
-        if length [va | ((va, vb), _) <- es, va == vb] > 0 then True else False
-        
-    getPrettyPrinted vs es = getPrintedVertices vs ++ getPrintedEdges es
-
-    getPrintedVertices vs = 
-        "\nVertices:\n\n" ++ unlines ["- " ++ vId | (vId, _) <- vs]
-    getPrintedEdges es = 
-        "\nEdges between :\n\n" ++ unlines ["- " ++ v1 ++" and " ++ v2 | ((v1, v2), _) <- es]
+    
