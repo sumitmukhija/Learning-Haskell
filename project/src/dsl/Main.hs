@@ -9,6 +9,11 @@ module Main (main) where
     decisionTreeExample = (decisionTree "width <= 0.8" "Setosa" "length <= 4.95") ::G
     neuralNetworkExample = (neuralNetworkWithNeurons 2 4 2) :: G
 
+    bdtex = BDTNode ("root", []) 
+            ((BDTNode ("left", []) (EmptyBDT,[]) (EmptyBDT,[])), []) 
+            ((BDTNode ("right", []) (EmptyBDT,[]) (EmptyBDT,[])), []) 
+
+
     main = return ()
 
     

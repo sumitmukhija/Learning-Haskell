@@ -13,14 +13,14 @@ module Attribs where
                             VtxStyle Style deriving (Show, Eq)
 
     -- Edge related attribs
-    data EdgeArrowShape = Normal | Dot | Tee | Empty | NoShape deriving Show
-    data EdgeDirection = Forward | NoDirection deriving Show
+    data EdgeArrowShape = Normal | Dot | Tee | Empty | NoShape deriving (Show, Eq)
+    data EdgeDirection = Forward | NoDirection deriving (Show, Eq)
 
     data EdgeAttribute = EdShape EdgeArrowShape |
                          EdLabelLoc LabelLocation |
                          EdLabel String |
                          EdDirection EdgeDirection |
-                         EdStyle Style deriving Show
+                         EdStyle Style deriving (Show, Eq)
 
     -- Graph related attribs
     data GraphAttribute = Strict Bool | 
