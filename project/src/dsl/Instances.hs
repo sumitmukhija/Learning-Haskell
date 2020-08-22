@@ -15,8 +15,6 @@ module Instances where
                (BDT, [EdgeAttribute]) 
                deriving (Show, Eq)
 
-
-
     instance Graph G where
         -- Vertex
         vertex vtxId = G [(vtxId, [])] [] []
@@ -69,36 +67,61 @@ module Instances where
         edge parent child = BDTNode (parent, []) 
             (vertex child, []) 
             (empty, []) 
-        setEdgeAttribute vtx1 vtx2 eAttr bdt = 
-            if pathExists vtx1 vtx2 bdt == True then undefined
-            else bdt
-        getEdgeAttributes vtx1 vtx2 bdt = undefined
+        setEdgeAttribute vtx1 vtx2 eAttr bdt = modDt where
+            validEdges = filterValidConnectedEdges bdt
+            (_, attribs) = (filter (\((x,y), z) -> (x,y) == (vtx1,vtx2)) validEdges) !! 0
+            modDt = updateEdgeAttributesforDT vtx1 vtx2 bdt (attribs ++ [eAttr])
+        getEdgeAttributes vtx1 vtx2 bdt = attribs where 
+            validEdges = filterValidConnectedEdges bdt
+            edge = filter (\((x,y), z) -> (x,y) == (vtx1,vtx2)) validEdges
+            ((x,y), attribs) = edge !! 0
 
         -- Graph
         empty = EmptyBDT
+        merge t1 t2 = error "Cannot merge two binary decision trees."
+        setGraphAttribute = error "Cannot set graph attribute for a decision tree"
+        getGraphAttributes bdt = [(Strict True), (Directed False), (GraphName "DecisionTree")]
+        getGraphEdges tree = filterValidConnectedEdges tree
+        getGraphVertices tree = verticesForDT tree
 
     -- BDT utility
     findVertexAttributesForDT vtxId EmptyBDT = []
-    findVertexAttributesForDT vtxId (BDTNode (root, rootAttr) (left, lAttrs) (right, rAttrs)) = 
+    findVertexAttributesForDT vtxId (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) = 
         if vtxId == root then rootAttr else 
             (findVertexAttributesForDT vtxId left) ++ (findVertexAttributesForDT vtxId right)
 
     updateVertexPairforDT vtxId EmptyBDT newPair = EmptyBDT
-    updateVertexPairforDT vtxId (BDTNode (root, rootAttr) (left, lAttrs) (right, rAttrs)) newPair= 
+    updateVertexPairforDT vtxId (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) newPair= 
         if vtxId == root 
             then 
-                BDTNode newPair (left, lAttrs) (right, rAttrs)
+                BDTNode newPair (left, lEdgeAttrs) (right, rEdgeAttrs)
             else
                 BDTNode (root, rootAttr) 
-                (updateVertexPairforDT vtxId left newPair, lAttrs)
-                (updateVertexPairforDT vtxId right newPair, rAttrs)
+                (updateVertexPairforDT vtxId left newPair, lEdgeAttrs)
+                (updateVertexPairforDT vtxId right newPair, rEdgeAttrs)
 
-    paths (EmptyBDT) = [[]]
-    paths (BDTNode (root, rootAttr) (left, lAttrs) (right, rAttrs)) = 
-        map (root:) (paths left ++ paths right)
+    updateEdgeAttributesforDT _ _ EmptyBDT _ = EmptyBDT
+    updateEdgeAttributesforDT v1 v2 (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) attribs = 
+        if root == v1 && rootNode(left) == v2 then 
+            BDTNode (root, rootAttr) (left, attribs) (right, rEdgeAttrs)
+        else 
+            BDTNode (root, rootAttr) 
+                    (updateEdgeAttributesforDT v1 v2 left attribs, lEdgeAttrs)
+                    (updateEdgeAttributesforDT v1 v2 right attribs, lEdgeAttrs)
 
-    pathExists from to dt = 
-        if length (filter (\x -> x == [from, to] || x == [to, from]) (paths dt)) > 0
-            then True
-            else False
+    verticesForDT (EmptyBDT) = []
+    verticesForDT (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) = 
+        [(root,rootAttr)] ++ verticesForDT left ++ verticesForDT right
+
+    rootNode EmptyBDT = ""
+    rootNode (BDTNode (root, _) (left, _) (right, _)) = root
+
+    getConnectedEdgesForDT EmptyBDT = [(("",""), [])]
+    getConnectedEdgesForDT (BDTNode (root, _) (left, rtlAtr) (right, rtrAtr)) = 
+        [((root, rootNode(left)), rtlAtr),((root, rootNode(right)), rtrAtr)] 
+        ++ (getConnectedEdgesForDT left) ++ (getConnectedEdgesForDT right)
+
+    filterValidConnectedEdges tree = filteredEdges where 
+        listOfAllEdges = getConnectedEdgesForDT tree
+        filteredEdges = filter (\((x,y), z) -> (x,y) /= ("","") && y /= "") listOfAllEdges
     

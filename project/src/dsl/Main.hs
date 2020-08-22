@@ -10,9 +10,8 @@ module Main (main) where
     neuralNetworkExample = (neuralNetworkWithNeurons 2 4 2) :: G
 
     bdtex = BDTNode ("root", []) 
-            ((BDTNode ("left", []) (EmptyBDT,[]) (EmptyBDT,[])), []) 
+            ((BDTNode ("left", []) (BDTNode ("subleft", []) (EmptyBDT,[]) (EmptyBDT,[]), []) (EmptyBDT,[])), []) 
             ((BDTNode ("right", []) (EmptyBDT,[]) (EmptyBDT,[])), []) 
-
 
     main = return ()
 
