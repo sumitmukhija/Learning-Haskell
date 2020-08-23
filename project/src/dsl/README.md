@@ -12,13 +12,13 @@
 
 | Module  | File   | Description   | Imports |
 | --- | --- | --- | --- |
-|  Language | [Language.hs](Language.hs "Language.hs")  |  Starting point of the dsl. Puts everything together | Vertex, Edge, Graph, Utils
-| Edge  |  [Edge.hs](Edge.hs "Edge.hs") | Contains classes for `EdgeType` and `EdgeAttributeType`. Also contains value constructors for `Edge` and `EdgeAttribute`. Contains `MultiParamTypeClasses`  | Vertex
-| Vertex  |  [Vertex.hs](Vertex.hs "Vertex.hs") | Contains classes for `VertexType` and `VertexAttributeType`. Also contains value constructors for `Vertex` and `VertexAttribute`. Contains `MultiParamTypeClasses`  |  --
-| Graph  |  [Graph.hs](Graph.hs "Graph.hs") | Contains classes for `GraphType`. Also contains value constructors for `Graph` and `GraphAttribute`. Contains `MultiParamTypeClasses`  |  Vertex, Edge, Utils
+|  BDTUtils | [BDTUtils.hs](BDTUtils.hs "BDTUtils.hs")  | Utils for BDT type | Types
+| DemoGraphs  |  [DemoGraphs.hs](DemoGraphs.hs "DemoGraphs.hs") | Contains demo for Decision tree and neural networks | Graphs, Attribs
+| Instances  |  [Instances.hs](Instances.hs "Instances.hs") | Contains instances for G and BDT |  Graph, Attribs, Utils, BDTUtils, Types
+| Graph  |  [Graph.hs](Graph.hs "Graph.hs") | Contains typeclass for graph. Some utility functions, too.  |  Attribs
 |  Utils | [Utils.hs](Utils.hs "Utils.hs")  | Bunch of helper functions primarily used by Graph module.  | Vertex, Edge
 |  Attribs | [Attribs.hs](Attribs.hs "Attribs.hs")  | Attributes for edges, vertices and graph  | None
-|  Printer | [Printer.hs](Attribs.hs "Attribs.hs")  | Should print the graph  | Graph, Vertex, Edge, Attrib
+|  Types | [Types.hs](Types.hs "Types.hs")  | Contains data types for G and BDT  | Attribs
 
 # 2. Concepts explored and used
 - MultiParamTypeClasses
