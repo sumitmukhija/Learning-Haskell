@@ -3,17 +3,9 @@ module Instances where
     import Graph
     import Attribs
     import Utils
-
-    data G = G  [(String, [VertexAttribute])]
-                [((String,String),[EdgeAttribute])]
-                [GraphAttribute] deriving Show
+    import BDTUtils
+    import Types
     
-
-    data BDT = EmptyBDT | 
-               BDTNode (String, [VertexAttribute]) 
-               (BDT, [EdgeAttribute]) 
-               (BDT, [EdgeAttribute]) 
-               deriving (Show, Eq)
 
     instance Graph G where
         -- Vertex
@@ -78,50 +70,11 @@ module Instances where
 
         -- Graph
         empty = EmptyBDT
-        merge t1 t2 = error "Cannot merge two binary decision trees."
+        merge t1 t2 = 
+            if canMerge t1 t2 == True then 
+                combine t1 t2
+            else error "Cannot merge two decision treees with distinct root elems"
         setGraphAttribute = error "Cannot set graph attribute for a decision tree"
         getGraphAttributes bdt = [(Strict True), (Directed False), (GraphName "DecisionTree")]
         getGraphEdges tree = filterValidConnectedEdges tree
         getGraphVertices tree = verticesForDT tree
-
-    -- BDT utility
-    findVertexAttributesForDT vtxId EmptyBDT = []
-    findVertexAttributesForDT vtxId (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) = 
-        if vtxId == root then rootAttr else 
-            (findVertexAttributesForDT vtxId left) ++ (findVertexAttributesForDT vtxId right)
-
-    updateVertexPairforDT vtxId EmptyBDT newPair = EmptyBDT
-    updateVertexPairforDT vtxId (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) newPair= 
-        if vtxId == root 
-            then 
-                BDTNode newPair (left, lEdgeAttrs) (right, rEdgeAttrs)
-            else
-                BDTNode (root, rootAttr) 
-                (updateVertexPairforDT vtxId left newPair, lEdgeAttrs)
-                (updateVertexPairforDT vtxId right newPair, rEdgeAttrs)
-
-    updateEdgeAttributesforDT _ _ EmptyBDT _ = EmptyBDT
-    updateEdgeAttributesforDT v1 v2 (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) attribs = 
-        if root == v1 && rootNode(left) == v2 then 
-            BDTNode (root, rootAttr) (left, attribs) (right, rEdgeAttrs)
-        else 
-            BDTNode (root, rootAttr) 
-                    (updateEdgeAttributesforDT v1 v2 left attribs, lEdgeAttrs)
-                    (updateEdgeAttributesforDT v1 v2 right attribs, lEdgeAttrs)
-
-    verticesForDT (EmptyBDT) = []
-    verticesForDT (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) = 
-        [(root,rootAttr)] ++ verticesForDT left ++ verticesForDT right
-
-    rootNode EmptyBDT = ""
-    rootNode (BDTNode (root, _) (left, _) (right, _)) = root
-
-    getConnectedEdgesForDT EmptyBDT = [(("",""), [])]
-    getConnectedEdgesForDT (BDTNode (root, _) (left, rtlAtr) (right, rtrAtr)) = 
-        [((root, rootNode(left)), rtlAtr),((root, rootNode(right)), rtrAtr)] 
-        ++ (getConnectedEdgesForDT left) ++ (getConnectedEdgesForDT right)
-
-    filterValidConnectedEdges tree = filteredEdges where 
-        listOfAllEdges = getConnectedEdgesForDT tree
-        filteredEdges = filter (\((x,y), z) -> (x,y) /= ("","") && y /= "") listOfAllEdges
-    
