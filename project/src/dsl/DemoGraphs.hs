@@ -49,38 +49,63 @@ module DemoGraphs where
 
     nnMergeVertices vertices = mergeMultipleGraphs vertices
 
--- Example 2 - Decision Tree
-    leftSubtree root left = edge root left
- 
-    rightSubtree root right = merge (edge root right) (rightSubtreeLevel2 right)
+    -- Example 2 Decision Tree
 
-    rightSubtreeLevel2 root = merge (edge root "length <= 5.05") (rightSubtreeLevel3 root)
-        
-    rightSubtreeLevel3 root = merge (rightSubtreeLevel3Right root) (rightSubtreeLevel3Left root) 
+    vrg = "Virginica"
+    vrs = "Versicolor"
+    set = "Setosa"
 
-    rightSubtreeLevel3Left root = merge (merge (edge "Width <= 1.65" "Virginica") (edge root "Width <= 1.65")) 
-                                    (merge (edge "Width <= 1.65" "Versicolor") (edge root "Width <= 1.65"))
+    splitByWidthToLeaves:: String
+    splitByWidthToLeaves = "width <= 1.65"
 
-    rightSubtreeLevel3Right root = (edge "length <= 5.05" "Virginica")
+    rt = "width < 0.8"
 
-    colorLeafNodes tree = coloredTree where 
-        vertices = getGraphVertices tree
-        leafNodes = 
-            [setVertexAttribute v (VtxFillColour "green") tree| (v, _) <- vertices, 
-            v == "Virginica" || v == "Versicolor" || v == "Setosa"]
-        coloredTree = mergeMultipleGraphs leafNodes
-        
-    getCompleteTree root left right = merge (leftSubtree root left) (rightSubtree root right) 
+    splitByLegthToVirginica = "length <= 5.05"
 
-    applyLabels tree = labelsApplied where
-        rootSitosa = setEdgeAttribute "width <= 0.8" "Setosa" (EdLabel "True") tree
-        subtree1 = setEdgeAttribute "width <= 0.8" "length <= 4.95" (EdLabel "False") rootSitosa
-        subtree2 = setEdgeAttribute "length <= 4.95" "Width <= 1.65" (EdLabel "True") subtree1
-        subtree3 = setEdgeAttribute "length <= 4.95" "length <= 5.05" (EdLabel "False") subtree2
-        subtree4 = setEdgeAttribute "length <= 5.05" "Virginica" (EdLabel "True or False") subtree3
-        subtree5 = setEdgeAttribute "Width <= 1.65" "Virginica" (EdLabel "False") subtree4
-        subtree6 = setEdgeAttribute "Width <= 1.65" "Versicolor" (EdLabel "True") subtree5
-        labelsApplied = subtree6
+    splitByLengthToFurtherSplits = "length <= 4.95"
 
-    decisionTree root left right = applyLabels (colorLeafNodes (getCompleteTree root left right))
-    
+    -- a::Graph g => g
+    -- a = edge splitByLegthToVirginica vrg
+    -- b::Graph g => g
+    -- b = edge splitByWidthToLeaves vrs
+    -- c:: Graph g => g
+    -- c = edge splitByWidthToLeaves vrg
+    -- d:: Graph g => g
+    -- d = merge b c -- w <=1.65
+
+    a::Graph g => g
+    a = edge rt splitByLengthToFurtherSplits
+    b::Graph g => g
+    b = edge rt set
+    c::Graph g => g
+    c = merge a b
+
+    d::Graph g => g
+    d = edge splitByLengthToFurtherSplits splitByLegthToVirginica
+
+    e:: Graph g => g
+    e = edge splitByLengthToFurtherSplits splitByWidthToLeaves
+
+    f:: Graph g => g
+    f = merge c d
+
+    g:: Graph g => g
+    g = merge f e
+
+    h:: Graph g => g
+    h = edge splitByLegthToVirginica vrg
+
+    i :: Graph g => g
+    i = edge splitByWidthToLeaves vrg
+
+    j:: Graph g => g
+    j = edge splitByWidthToLeaves vrs
+
+    k:: Graph g => g
+    k = merge i j
+
+    l:: Graph g => g
+    l = merge g k
+
+    m::Graph g => g
+    m = merge l h

@@ -53,30 +53,33 @@ module BDTUtils where
     degreeOfRootNode (BDTNode (root, _) (l, _) (EmptyBDT, _)) = 1
     degreeOfRootNode (BDTNode (root, _) (l, _) (r, _)) = 2
 
-    getConnectedEdgesForDT EmptyBDT = [(("",""), [])]
-    getConnectedEdgesForDT (BDTNode (root, _) (left, rtlAtr) (right, rtrAtr)) = 
+    degreeOfNode node (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) 
+        = if root == node
+            then degreeOfRootNode (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs))
+          else
+              degreeOfRootNode (left) + degreeOfRootNode (right)
+
+    edgesForDT EmptyBDT = [(("",""), [])]
+    edgesForDT (BDTNode (root, _) (left, rtlAtr) (right, rtrAtr)) = 
         [((root, rootNode(left)), rtlAtr),((root, rootNode(right)), rtrAtr)] 
-        ++ (getConnectedEdgesForDT left) ++ (getConnectedEdgesForDT right)
+        ++ (edgesForDT left) ++ (edgesForDT right)
 
     filterValidConnectedEdges tree = filteredEdges where 
-        listOfAllEdges = getConnectedEdgesForDT tree
-        filteredEdges = filter (\((x,y), z) -> (x,y) /= ("","") && y /= "") listOfAllEdges
+        listOfAllEdges = edgesForDT tree
+        filteredEdges = filter (\((x,y), z) -> (x,y) /= ("","") && y /= "" && x /= y) listOfAllEdges 
 
-    canMerge t1 t2 = (rootNode(t1) == rootNode(t2)) && (degreeOfRootNode(t1) + degreeOfRootNode(t2) <= 2)
 
-    combine t1 t2 = 
-        if left(t2) /= EmptyBDT then
-            if left(t1) == EmptyBDT then
-                insertLeft t1 (left t2)
-            else
-                if right(t1) == EmptyBDT then
-                    insertRight t1 (left t2)
-                else 
-                    t1
+    canJoin t1 t2 = 
+        rootNode(t2) `elem` [ x | (x, y) <- (verticesForDT t1)] &&
+        (degreeOfNode (rootNode(t2)) t1) < 2
+
+    join EmptyBDT t2 = EmptyBDT
+    join (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) t2 = 
+        if root == rootNode(t2) && left == EmptyBDT then
+            insertLeft (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) t2
         else
-            if right(t2) /= EmptyBDT && left(t1) == EmptyBDT then
-                insertLeft t1 (right t2)
-            else
-                if right(t2) /= EmptyBDT && right(t1) == EmptyBDT then 
-                    insertRight t1 (right t2)
-                else t1
+            if root == rootNode(t2) && right == EmptyBDT then
+                insertRight (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) t2
+            else 
+                BDTNode (root, rootAttr) ((join left t2),[]) ((join right t2),[])
+    

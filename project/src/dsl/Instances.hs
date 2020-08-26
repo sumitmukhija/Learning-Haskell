@@ -70,10 +70,7 @@ module Instances where
 
         -- Graph
         empty = EmptyBDT
-        merge t1 t2 = 
-            if canMerge t1 t2 == True then 
-                combine t1 t2
-            else error "Cannot merge two decision treees with distinct root elems"
+        merge t1 t2 = join t1 t2
         setGraphAttribute = error "Cannot set graph attribute for a decision tree"
         getGraphAttributes bdt = [(Strict True), (Directed False), (GraphName "DecisionTree")]
         getGraphEdges tree = filterValidConnectedEdges tree
