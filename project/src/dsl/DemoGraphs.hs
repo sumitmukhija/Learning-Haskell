@@ -64,48 +64,35 @@ module DemoGraphs where
 
     splitByLengthToFurtherSplits = "length <= 4.95"
 
-    -- a::Graph g => g
-    -- a = edge splitByLegthToVirginica vrg
-    -- b::Graph g => g
-    -- b = edge splitByWidthToLeaves vrs
-    -- c:: Graph g => g
-    -- c = edge splitByWidthToLeaves vrg
-    -- d:: Graph g => g
-    -- d = merge b c -- w <=1.65
+    rootLevelOne::Graph g => g
+    rootLevelOne = merge (edge rt splitByLengthToFurtherSplits) (edge rt set)
 
-    a::Graph g => g
-    a = edge rt splitByLengthToFurtherSplits
-    b::Graph g => g
-    b = edge rt set
-    c::Graph g => g
-    c = merge a b
+    leftLevelTwo::Graph g => g
+    leftLevelTwo = edge splitByLengthToFurtherSplits splitByLegthToVirginica
 
-    d::Graph g => g
-    d = edge splitByLengthToFurtherSplits splitByLegthToVirginica
+    rightLevelTwo:: Graph g => g
+    rightLevelTwo = edge splitByLengthToFurtherSplits splitByWidthToLeaves
 
-    e:: Graph g => g
-    e = edge splitByLengthToFurtherSplits splitByWidthToLeaves
+    subtreeLevelOne:: Graph g => g
+    subtreeLevelOne = merge rootLevelOne leftLevelTwo
 
-    f:: Graph g => g
-    f = merge c d
+    subtreeLevelTwo:: Graph g => g
+    subtreeLevelTwo = merge subtreeLevelOne rightLevelTwo
 
-    g:: Graph g => g
-    g = merge f e
+    leftToLeafVirginca:: Graph g => g
+    leftToLeafVirginca = edge splitByLegthToVirginica vrg
 
-    h:: Graph g => g
-    h = edge splitByLegthToVirginica vrg
+    rightToLeafVirginca :: Graph g => g
+    rightToLeafVirginca = edge splitByWidthToLeaves vrg
 
-    i :: Graph g => g
-    i = edge splitByWidthToLeaves vrg
+    rightToLeafVersi:: Graph g => g
+    rightToLeafVersi = edge splitByWidthToLeaves vrs
 
-    j:: Graph g => g
-    j = edge splitByWidthToLeaves vrs
+    rightBottomSubtree:: Graph g => g
+    rightBottomSubtree = merge rightToLeafVirginca rightToLeafVersi
 
-    k:: Graph g => g
-    k = merge i j
+    midSubtree:: Graph g => g
+    midSubtree = merge subtreeLevelTwo rightBottomSubtree
 
-    l:: Graph g => g
-    l = merge g k
-
-    m::Graph g => g
-    m = merge l h
+    decisionTreeExample ::Graph g => g
+    decisionTreeExample = merge midSubtree leftToLeafVirginca
