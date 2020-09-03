@@ -70,7 +70,7 @@ module Instances where
 
         -- Graph
         empty = EmptyBDT
-        merge t1 t2 = join t1 t2
+        merge t1 t2 = joinTrees t1 t2
         setGraphAttribute = error "Cannot set graph attribute for a decision tree"
         getGraphAttributes bdt = [(Strict True), (Directed False), (GraphName "DecisionTree")]
         getGraphEdges tree = filterValidConnectedEdges tree

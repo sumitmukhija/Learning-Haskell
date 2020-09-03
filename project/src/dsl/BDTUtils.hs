@@ -73,13 +73,13 @@ module BDTUtils where
         rootNode(t2) `elem` [ x | (x, y) <- (verticesForDT t1)] &&
         (degreeOfNode (rootNode(t2)) t1) < 2
 
-    join EmptyBDT t2 = EmptyBDT
-    join (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) t2 = 
+    joinTrees EmptyBDT t2 = EmptyBDT
+    joinTrees (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) t2 = 
         if root == rootNode(t2) && left == EmptyBDT then
             insertLeft (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) t2
         else
             if root == rootNode(t2) && right == EmptyBDT then
                 insertRight (BDTNode (root, rootAttr) (left, lEdgeAttrs) (right, rEdgeAttrs)) t2
             else 
-                BDTNode (root, rootAttr) ((join left t2),[]) ((join right t2),[])
+                BDTNode (root, rootAttr) ((joinTrees left t2),[]) ((joinTrees right t2),[])
     
